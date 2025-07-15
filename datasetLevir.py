@@ -11,7 +11,8 @@ train_images_path = os.path.join(dataset_base_path , 'train')
 test_images_path = os.path.join(dataset_base_path, 'test')
 val_images_path = os.path.join(dataset_base_path, 'val')
 
-IMAGE_HEIGHT = 256
+# image size is set to 256 due to GPU constraints , you can modify it as per your use
+IMAGE_HEIGHT = 256 
 IMAGE_WIDTH = 256
 
 class CreateDataset(torch.utils.data.Dataset):
