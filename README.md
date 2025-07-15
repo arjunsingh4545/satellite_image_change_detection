@@ -66,8 +66,7 @@ git clone https://github.com/arjunsingh4545/satelliteImageChangeDetection.git
 cd satelliteImageChangeDetection
 
 # Install dependencies
-# Note: requirements.txt not created yet
-# pip install -r requirements.txt
+pip install -r requirements.txt
 
 # Run the main script
 python main.py
