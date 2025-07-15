@@ -6,7 +6,7 @@ import albumentations as A
 import cv2
 import matplotlib.pyplot as plt
 import psutil
-dataset_base_path = r'/c/Users/91704/.cache/kagglehub/datasets/mdrifaturrahman33/levir-cd/versions/1/LEVIR CD'
+dataset_base_path = r'/location/to/levir-cd/dataset'
 train_images_path = os.path.join(dataset_base_path , 'train')
 test_images_path = os.path.join(dataset_base_path, 'test')
 val_images_path = os.path.join(dataset_base_path, 'val')
@@ -55,6 +55,7 @@ class CreateDataset(torch.utils.data.Dataset):
         return (image_b, image_a), mask
 
 
+# albumentation transforms (data augmentation)
 train_transform = A.Compose([
     A.Resize(height=IMAGE_HEIGHT, width=IMAGE_WIDTH, interpolation=cv2.INTER_NEAREST),
     A.HorizontalFlip(p=0.5),
@@ -73,6 +74,7 @@ val_transform = A.Compose([
 ], additional_targets={'image1': 'image'}) # 'image1' corresponds to image_a
 
 
+#creating datasets for dataloader
 train_dataset = CreateDataset(train_images_path, transform=train_transform)
 val_dataset = CreateDataset(val_images_path, transform=val_transform)
 test_dataset = CreateDataset(test_images_path, transform=val_transform)
@@ -85,7 +87,7 @@ def myDataLoader(dataset, shuffle=True, BATCH_SIZE=16, NUM_WORKERS=2):
         shuffle=shuffle,
         num_workers=NUM_WORKERS,
         pin_memory=torch.cuda.is_available(),
-        persistent_workers=True
+        persistent_workers=True 
     )
 
 train_loader = myDataLoader(train_dataset, shuffle=True, BATCH_SIZE=4, NUM_WORKERS=2)
