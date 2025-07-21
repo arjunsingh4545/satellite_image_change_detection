@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 
 model_path = "/home/arjunsingh/self/projects/imageChangeDetectionFinal2/best_model.pth"
 
+
 # 1. Define the architecture you trained
 class MyChangeDetectionModel(nn.Module):
     def __init__(self):
@@ -23,6 +24,7 @@ class MyChangeDetectionModel(nn.Module):
         x = torch.cat((imgA, imgB), dim=1)  # assumes input is [B, 3, H, W]
         return self.encoder(x)
 
+
 # 2. Load the model weights
 def load_model(model_path):
     model = MyChangeDetectionModel().cuda()
@@ -31,15 +33,19 @@ def load_model(model_path):
     model.eval()
     return model
 
+
 # 3. Load and preprocess an image
 def load_image(image_path):
-    transform = transforms.Compose([
-        transforms.Resize((256, 256)),  # or your actual model input size
-        transforms.ToTensor(),
-    ])
+    transform = transforms.Compose(
+        [
+            transforms.Resize((256, 256)),  # or your actual model input size
+            transforms.ToTensor(),
+        ]
+    )
     image = Image.open(image_path).convert("RGB")
     tensor = transform(image).unsqueeze(0).cuda()  # shape: [1, 3, H, W]
     return tensor
+
 
 # 4. Predict using the model
 def predict(model, imageA, imageB):
@@ -47,6 +53,7 @@ def predict(model, imageA, imageB):
     with torch.no_grad():
         output = model(imageA, imageB)
     return output
+
 
 # 5. Plot result
 def plot_predictions(predictions, imageA, imageB):
@@ -67,14 +74,24 @@ def plot_predictions(predictions, imageA, imageB):
     plt.tight_layout()
     plt.show()
 
+
 # 6. Main entrypoint
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Predict changes between two images using a trained model."
     )
-    parser.add_argument("--model_path", type=str, default=model_path, help="Path to the trained model file.")
-    parser.add_argument("--imageA", type=str, required=True, help="Path to the first input image.")
-    parser.add_argument("--imageB", type=str, required=True, help="Path to the second input image.")
+    parser.add_argument(
+        "--model_path",
+        type=str,
+        default=model_path,
+        help="Path to the trained model file.",
+    )
+    parser.add_argument(
+        "--imageA", type=str, required=True, help="Path to the first input image."
+    )
+    parser.add_argument(
+        "--imageB", type=str, required=True, help="Path to the second input image."
+    )
     args = parser.parse_args()
 
     model = load_model(args.model_path)
@@ -83,4 +100,3 @@ if __name__ == "__main__":
 
     predictions = predict(model, imageA, imageB)
     plot_predictions(predictions, imageA, imageB)
-
