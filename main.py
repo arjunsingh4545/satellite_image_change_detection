@@ -27,6 +27,8 @@ if __name__ == "__main__":
     # Test the model
 
     start_time = time.time()
+    # test_loader is assumed to be defined in datasetLevir.py
+    # if not , you can define it similarly to train_loader and val_loader
     predictions, imageA_list, imageB_list, masks_list = model_predict(
         model, test_loader, device="cuda" if torch.cuda.is_available() else "cpu"
     )
