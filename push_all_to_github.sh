@@ -41,5 +41,6 @@ git commit -m "Upload all files with LFS support (auto-tracked large files)"
 
 # Step 6: Push to current branch
 branch=$(git rev-parse --abbrev-ref HEAD)
+git pull --rebase origin "$branch"
 git push origin "$branch"
 
